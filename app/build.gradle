@@ -29,6 +29,9 @@ dependencies {
 
     // design support
     compile 'com.android.support:design:25.3.1'
+    // butter knife support
+    compile 'com.jakewharton:butterknife:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
 
     testCompile 'junit:junit:4.12'
