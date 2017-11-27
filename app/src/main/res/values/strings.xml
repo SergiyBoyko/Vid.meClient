@@ -3,4 +3,7 @@
     <string name="item_title">Video name</string>
     <string name="item_desc">Some item description</string>
     <string name="item_action">Play</string>
+    <string name="featured_title">FEATURED</string>
+    <string name="new_title">NEW</string>
+    <string name="feed_title">FEED</string>
 </resources>
