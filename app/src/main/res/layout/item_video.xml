@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="304dp"
+    android:layout_gravity="center"
+    android:layout_marginBottom="@dimen/md_keylines"
+    android:foreground="?attr/selectableItemBackground">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/card_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/card_image_height"
+            android:scaleType="centerCrop"
+            android:src="@drawable/example" />
+
+
+        <TextView
+            android:id="@+id/card_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_image"
+            android:layout_marginBottom="@dimen/md_keylines"
+            android:layout_marginLeft="@dimen/md_keylines"
+            android:layout_marginRight="@dimen/md_keylines"
+            android:layout_marginTop="@dimen/md_keylines"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/item_title"
+            android:textSize="@dimen/article_subheading" />
+
+        <Button
+            android:id="@+id/action_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_text"
+            android:text="Play"
+            android:textColor="?attr/colorPrimary" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
