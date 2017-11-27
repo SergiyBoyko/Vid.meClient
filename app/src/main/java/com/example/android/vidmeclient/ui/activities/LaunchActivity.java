@@ -1,7 +1,9 @@
-package com.example.android.vidmeclient;
+package com.example.android.vidmeclient.ui.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.android.vidmeclient.R;
 
 public class LaunchActivity extends AppCompatActivity {
 
