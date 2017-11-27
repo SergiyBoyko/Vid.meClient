@@ -6,4 +6,8 @@
     <string name="featured_title">FEATURED</string>
     <string name="new_title">NEW</string>
     <string name="feed_title">FEED</string>
+    <string name="login_password">Password</string>
+    <string name="login_username">Username</string>
+    <string name="login_button">Login</string>
+    <string name="create_account">No account yet? Create one</string>
 </resources>
