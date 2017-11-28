@@ -7,11 +7,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.android.vidmeclient.R;
 import com.example.android.vidmeclient.ui.fragments.FeaturedFragment;
 import com.example.android.vidmeclient.ui.fragments.LoginFragment;
 import com.example.android.vidmeclient.ui.fragments.NewFragment;
+import com.example.android.vidmeclient.ui.fragments.RootFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +37,15 @@ public class LaunchActivity extends AppCompatActivity {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new FeaturedFragment(), getResources().getString(R.string.featured_title));
         adapter.addFragment(new NewFragment(), getResources().getString(R.string.new_title));
-        adapter.addFragment(new LoginFragment(), getResources().getString(R.string.feed_title));
+        adapter.addFragment(new RootFragment(), getResources().getString(R.string.feed_title));
         viewPager.setAdapter(adapter);
     }
 
+    private void showText(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
 
-    private static class Adapter extends FragmentPagerAdapter {
+    private class Adapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
