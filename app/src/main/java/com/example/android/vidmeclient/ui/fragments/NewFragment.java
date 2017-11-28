@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.vidmeclient.R;
-import com.example.android.vidmeclient.views.NewView;
+import com.example.android.vidmeclient.views.NewContentView;
 
 /**
  * Created by fbrsw on 27.11.2017.
  */
 
-public class NewFragment extends Fragment implements NewView {
+public class NewFragment extends Fragment implements NewContentView {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

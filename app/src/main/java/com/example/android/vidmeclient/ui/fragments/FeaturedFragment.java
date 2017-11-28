@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.vidmeclient.R;
-import com.example.android.vidmeclient.views.FeaturedView;
+import com.example.android.vidmeclient.views.FeaturedContentView;
 
 /**
  * Created by fbrsw on 27.11.2017.
  */
 
-public class FeaturedFragment extends Fragment implements FeaturedView {
+public class FeaturedFragment extends Fragment implements FeaturedContentView {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

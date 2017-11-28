@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.vidmeclient.R;
-import com.example.android.vidmeclient.views.FeedView;
+import com.example.android.vidmeclient.views.FeedContentView;
 
 /**
  * Created by fbrsw on 28.11.2017.
  */
 
-public class FeedFragment extends Fragment implements FeedView {
+public class FeedFragment extends Fragment implements FeedContentView {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
