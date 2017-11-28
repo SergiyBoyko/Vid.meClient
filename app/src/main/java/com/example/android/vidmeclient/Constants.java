@@ -8,4 +8,6 @@ public class Constants {
     public static final String VID_ME_LINK = "https://vid.me";
 
     public static final String VID_ME_API = "https://api.vid.me/";
+
+    public static final int VIDEO_COUNT_LIMIT = 10;
 }
