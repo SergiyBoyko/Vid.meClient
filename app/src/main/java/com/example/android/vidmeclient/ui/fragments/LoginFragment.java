@@ -1,9 +1,12 @@
 package com.example.android.vidmeclient.ui.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +15,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.vidmeclient.Constants;
 import com.example.android.vidmeclient.R;
+import com.example.android.vidmeclient.ui.activities.LaunchActivity;
 import com.example.android.vidmeclient.views.LogInView;
 
 import butterknife.BindView;
@@ -58,10 +63,18 @@ public class LoginFragment extends Fragment implements LogInView {
 
             @Override
             public void onClick(View v) {
-                // Start the Signup activity
                 showText("SignUP");
 //                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
 //                startActivityForResult(intent, REQUEST_SIGNUP);
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.VID_ME_LINK));
+                startActivity(browserIntent);
+
+//                FragmentTransaction trans = getFragmentManager()
+//                        .beginTransaction();
+//                trans.replace(R.id.root_frame, new FeedFragment());
+//                trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//                trans.addToBackStack(null);
+//                trans.commit();
             }
         });
 
@@ -75,7 +88,7 @@ public class LoginFragment extends Fragment implements LogInView {
             return;
         }
 
-//        loginButton.setEnabled(false);
+        loginButton.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setIndeterminate(true);
@@ -87,13 +100,16 @@ public class LoginFragment extends Fragment implements LogInView {
 
         showText("login with " + username + " " + password);
 
+        progressDialog.hide();
 
+        onLoginSuccess();
         // TODO: Implement authentication logic here.
 
     }
 
     public void onLoginSuccess() {
         loginButton.setEnabled(true);
+//        showText("try step 1");\
 //        finish();
     }
 
