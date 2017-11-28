@@ -22,7 +22,7 @@ import dagger.Component;
         AppModule.class,
         ApiModule.class
 })
-public interface AppComponent {
+public interface AppComponent extends ApiComponent {
 
     Context context();
 
