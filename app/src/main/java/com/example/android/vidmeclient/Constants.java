@@ -5,5 +5,7 @@ package com.example.android.vidmeclient;
  */
 
 public class Constants {
+    public static final String VID_ME_LINK = "https://vid.me";
+
     public static final String VID_ME_API = "https://api.vid.me/";
 }
