@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.vidmeclient.R;
+import com.example.android.vidmeclient.views.LogInView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +22,7 @@ import butterknife.ButterKnife;
  * Created by fbrsw on 27.11.2017.
  */
 
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements LogInView {
     private static final int REQUEST_SIGNUP = 0;
 
     @BindView(R.id.input_username)

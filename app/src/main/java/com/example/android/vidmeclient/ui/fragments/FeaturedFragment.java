@@ -7,11 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.android.vidmeclient.R;
+import com.example.android.vidmeclient.views.FeaturedView;
+
 /**
  * Created by fbrsw on 27.11.2017.
  */
 
-public class FeaturedFragment extends Fragment {
+public class FeaturedFragment extends Fragment implements FeaturedView {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -21,7 +24,9 @@ public class FeaturedFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View v = inflater.inflate(R.layout.featured_fragment, container, false);
+
+        return v;
     }
 
 }
