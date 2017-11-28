@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
         <ImageView
             android:id="@+id/card_image"
             android:layout_width="match_parent"
@@ -18,6 +19,12 @@
             android:scaleType="centerCrop"
             android:src="@drawable/example" />
 
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="50dp"
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/card_text"
@@ -46,24 +53,25 @@
             android:id="@+id/like_count"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/cards_button_height"
-            android:layout_toLeftOf="@+id/favourite_button"
             android:layout_below="@+id/card_text"
+            android:layout_marginRight="16dp"
+            android:layout_toLeftOf="@+id/favourite_button"
             android:gravity="center_vertical"
-            android:textSize="36sp"
-            android:text="200"/>
+            android:text="200"
+            android:textSize="24sp" />
 
 
         <ImageButton
             android:id="@+id/favourite_button"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="@dimen/cards_button_width"
             android:layout_height="@dimen/cards_button_height"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/card_text"
+            android:scaleType="center"
             android:layout_marginRight="@dimen/mg_fav_but"
             android:src="@drawable/ic_favourite"
-            android:layout_below="@+id/card_text"
-            android:layout_alignParentRight="true"
-            style="?android:attr/borderlessButtonStyle"
             android:tint="@android:color/darker_gray" />
-
 
 
     </RelativeLayout>
