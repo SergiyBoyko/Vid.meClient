@@ -1,8 +1,7 @@
 package com.example.android.vidmeclient.presenters;
 
-import com.example.android.vidmeclient.model.entities.FeaturedContentResponse;
+import com.example.android.vidmeclient.model.entities.ContentResponse;
 import com.example.android.vidmeclient.model.remote.IFeaturedDataSource;
-import com.example.android.vidmeclient.ui.activities.LaunchActivity;
 import com.example.android.vidmeclient.utils.rx.RxErrorAction;
 import com.example.android.vidmeclient.utils.rx.RxRetryWithDelay;
 import com.example.android.vidmeclient.views.FeaturedContentView;
@@ -25,10 +24,10 @@ public class FeaturedDataPresenter extends BasePresenter<FeaturedContentView> {
     public void getFeaturedContent(int lim, int off) {
         subscribe(featuredDataSource.getFeaturedContent(lim, off)
                 .retryWhen(new RxRetryWithDelay())
-                .map(FeaturedContentResponse::getVideos)
+                .map(ContentResponse::getVideos)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(getView()::showVideoContents, new RxErrorAction(getView().getContext()))
+                .subscribe(getView()::showVideoContent, new RxErrorAction(getView().getContext()))
         );
     }
 }
