@@ -3,6 +3,7 @@ package com.example.android.vidmeclient.di.component;
 import com.example.android.vidmeclient.di.module.PresentersModule;
 import com.example.android.vidmeclient.di.scope.Scope;
 import com.example.android.vidmeclient.di.scope.Scopes;
+import com.example.android.vidmeclient.ui.fragments.FeaturedFragment;
 
 import dagger.Component;
 
@@ -16,4 +17,7 @@ import dagger.Component;
         dependencies = {AppComponent.class}
 )
 public interface PresentersComponent {
+
+    void inject(FeaturedFragment featuredFragment);
+
 }
