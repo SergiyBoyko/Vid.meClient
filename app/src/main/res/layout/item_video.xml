@@ -43,7 +43,7 @@
             android:textColor="?attr/colorPrimary" />
 
         <TextView
-            android:id="@+id/favourite_count"
+            android:id="@+id/like_count"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/cards_button_height"
             android:layout_toLeftOf="@+id/favourite_button"
