@@ -1,4 +1,4 @@
-package com.example.android.vidmeclient.module.remote;
+package com.example.android.vidmeclient.model.remote;
 
 import com.example.android.vidmeclient.api.VidMeApi;
 

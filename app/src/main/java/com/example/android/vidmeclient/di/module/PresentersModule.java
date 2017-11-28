@@ -2,8 +2,8 @@ package com.example.android.vidmeclient.di.module;
 
 import com.example.android.vidmeclient.di.scope.Scope;
 import com.example.android.vidmeclient.di.scope.Scopes;
-import com.example.android.vidmeclient.module.remote.IFeaturedDataSource;
-import com.example.android.vidmeclient.module.remote.INewDataSource;
+import com.example.android.vidmeclient.model.remote.IFeaturedDataSource;
+import com.example.android.vidmeclient.model.remote.INewDataSource;
 import com.example.android.vidmeclient.presenters.FeaturedDataPresenter;
 import com.example.android.vidmeclient.presenters.NewDataPresenter;
 

@@ -1,6 +1,6 @@
 package com.example.android.vidmeclient.presenters;
 
-import com.example.android.vidmeclient.module.remote.IFeaturedDataSource;
+import com.example.android.vidmeclient.model.remote.IFeaturedDataSource;
 
 /**
  * Created by fbrsw on 27.11.2017.

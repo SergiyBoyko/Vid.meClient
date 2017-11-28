@@ -1,6 +1,6 @@
 package com.example.android.vidmeclient.presenters;
 
-import com.example.android.vidmeclient.module.remote.IFeedDataSource;
+import com.example.android.vidmeclient.model.remote.IFeedDataSource;
 
 /**
  * Created by fbrsw on 27.11.2017.

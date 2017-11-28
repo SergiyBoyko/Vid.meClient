@@ -1,11 +1,9 @@
 package com.example.android.vidmeclient.di.component;
 
-import com.example.android.vidmeclient.module.remote.IFeaturedDataSource;
-import com.example.android.vidmeclient.module.remote.IFeedDataSource;
-import com.example.android.vidmeclient.module.remote.ILogInDataSource;
-import com.example.android.vidmeclient.module.remote.INewDataSource;
-
-import javax.inject.Named;
+import com.example.android.vidmeclient.model.remote.IFeaturedDataSource;
+import com.example.android.vidmeclient.model.remote.IFeedDataSource;
+import com.example.android.vidmeclient.model.remote.ILogInDataSource;
+import com.example.android.vidmeclient.model.remote.INewDataSource;
 
 import retrofit2.Retrofit;
 

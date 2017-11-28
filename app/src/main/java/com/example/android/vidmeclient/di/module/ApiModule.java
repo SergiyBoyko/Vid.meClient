@@ -3,16 +3,15 @@ package com.example.android.vidmeclient.di.module;
 
 import com.example.android.vidmeclient.Constants;
 import com.example.android.vidmeclient.api.VidMeApi;
-import com.example.android.vidmeclient.module.remote.FeaturedDataSource;
-import com.example.android.vidmeclient.module.remote.FeedDataSource;
-import com.example.android.vidmeclient.module.remote.IFeaturedDataSource;
-import com.example.android.vidmeclient.module.remote.IFeedDataSource;
-import com.example.android.vidmeclient.module.remote.ILogInDataSource;
-import com.example.android.vidmeclient.module.remote.INewDataSource;
-import com.example.android.vidmeclient.module.remote.LogInDataSource;
-import com.example.android.vidmeclient.module.remote.NewDataSource;
+import com.example.android.vidmeclient.model.remote.FeaturedDataSource;
+import com.example.android.vidmeclient.model.remote.FeedDataSource;
+import com.example.android.vidmeclient.model.remote.IFeaturedDataSource;
+import com.example.android.vidmeclient.model.remote.IFeedDataSource;
+import com.example.android.vidmeclient.model.remote.ILogInDataSource;
+import com.example.android.vidmeclient.model.remote.INewDataSource;
+import com.example.android.vidmeclient.model.remote.LogInDataSource;
+import com.example.android.vidmeclient.model.remote.NewDataSource;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
