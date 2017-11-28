@@ -4,13 +4,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.android.vidmeclient.AppVidMe;
+import com.example.android.vidmeclient.Constants;
 import com.example.android.vidmeclient.R;
 import com.example.android.vidmeclient.di.component.AppComponent;
 import com.example.android.vidmeclient.di.component.DaggerPresentersComponent;
@@ -19,6 +22,7 @@ import com.example.android.vidmeclient.model.entities.Video;
 import com.example.android.vidmeclient.presenters.FeaturedDataPresenter;
 import com.example.android.vidmeclient.views.FeaturedContentView;
 import com.example.android.vidmeclient.widgets.adapters.VideoContentAdapter;
+import com.example.android.vidmeclient.widgets.listeners.ElementsBarScrollListener;
 
 import java.util.List;
 
@@ -35,9 +39,12 @@ public class FeaturedFragment extends Fragment implements FeaturedContentView {
 
     private VideoContentAdapter adapter;
 
+    private int offset = 0;
 
     @BindView(R.id.my_recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.swipe_refresh)
+    SwipeRefreshLayout swiper;
 
     @Inject
     FeaturedDataPresenter presenter;
@@ -50,7 +57,7 @@ public class FeaturedFragment extends Fragment implements FeaturedContentView {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.featured_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_content, container, false);
         ButterKnife.bind(this, view);
 
         DaggerPresentersComponent.builder()
@@ -59,21 +66,19 @@ public class FeaturedFragment extends Fragment implements FeaturedContentView {
                 .build()
                 .inject(this);
 
-        adapter = new VideoContentAdapter(getContext(), null);
-
-        recyclerView.setAdapter(adapter);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        presenter.setView(this);
-        presenter.getFeaturedContent(10, 0);
+        swiper.setOnRefreshListener(this::loadFragmentSources);
+        loadFragmentSources();
         return view;
     }
 
     @Override
-    public void showVideoContents(List<Video> videos) {
-        adapter.setVideos(videos);
+    public void showVideoContent(List<Video> videos) {
+        adapter.addVideos(videos);
         adapter.notifyDataSetChanged();
+
+        if (swiper.isRefreshing()) {
+            swiper.setRefreshing(false);
+        }
     }
 
     @Override
@@ -81,8 +86,32 @@ public class FeaturedFragment extends Fragment implements FeaturedContentView {
         return getActivity().getApplicationContext();
     }
 
+    private void loadFragmentSources() {
+        offset = 0;
+        adapter = new VideoContentAdapter(getContext(), null);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        recyclerView.setOnScrollListener(new ElementsBarScrollListener(getContext()) {
+            @Override
+            public void action() {
+                offset += Constants.VIDEO_COUNT_LIMIT;
+                presenter.getFeaturedContent(Constants.VIDEO_COUNT_LIMIT, offset);
+            }
+        });
+
+        presenter.setView(this);
+        presenter.getFeaturedContent(Constants.VIDEO_COUNT_LIMIT, 0);
+    }
+
 
     public AppComponent getAppComponent() {
         return ((AppVidMe) getActivity().getApplication()).appComponent();
+    }
+
+
+    private void showText(String text) {
+        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
     }
 }
