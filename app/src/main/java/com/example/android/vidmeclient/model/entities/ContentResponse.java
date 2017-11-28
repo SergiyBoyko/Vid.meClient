@@ -9,7 +9,7 @@ import java.util.List;
  * Created by fbrsw on 28.11.2017.
  */
 
-public class FeaturedContentResponse {
+public class ContentResponse {
     @SerializedName("status")
     @Expose
     private Boolean status;
