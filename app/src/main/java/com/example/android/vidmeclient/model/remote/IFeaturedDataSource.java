@@ -1,6 +1,6 @@
 package com.example.android.vidmeclient.model.remote;
 
-import com.example.android.vidmeclient.model.entities.FeaturedContentResponse;
+import com.example.android.vidmeclient.model.entities.ContentResponse;
 
 import rx.Observable;
 
@@ -10,6 +10,6 @@ import rx.Observable;
 
 public interface IFeaturedDataSource {
 
-    Observable<FeaturedContentResponse> getFeaturedContent(int lim, int off);
+    Observable<ContentResponse> getFeaturedContent(int lim, int off);
 
 }

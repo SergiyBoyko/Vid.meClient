@@ -1,7 +1,7 @@
 package com.example.android.vidmeclient.model.remote;
 
 import com.example.android.vidmeclient.api.VidMeApi;
-import com.example.android.vidmeclient.model.entities.FeaturedContentResponse;
+import com.example.android.vidmeclient.model.entities.ContentResponse;
 
 import rx.Observable;
 
@@ -17,7 +17,7 @@ public class FeaturedDataSource implements IFeaturedDataSource {
     }
 
     @Override
-    public Observable<FeaturedContentResponse> getFeaturedContent(int lim, int off) {
+    public Observable<ContentResponse> getFeaturedContent(int lim, int off) {
         return vidMeApi.getFeaturedContent(lim, off);
     }
 }
