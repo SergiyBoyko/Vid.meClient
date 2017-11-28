@@ -1,6 +1,6 @@
 package com.example.android.vidmeclient.api;
 
-import com.example.android.vidmeclient.model.entities.FeaturedContentResponse;
+import com.example.android.vidmeclient.model.entities.ContentResponse;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -13,6 +13,12 @@ import rx.Observable;
 public interface VidMeApi {
 
     @GET("/videos/featured")
-    Observable<FeaturedContentResponse> getFeaturedContent(@Query("limit") int limit, @Query("offset") int offset);
+    Observable<ContentResponse> getFeaturedContent(@Query("limit") int limit, @Query("offset") int offset);
+
+    @GET("/videos/new")
+    Observable<ContentResponse> getNewContent(@Query("limit") int limit, @Query("offset") int offset);
+    
+    @GET("/videos/feed")
+    Observable<ContentResponse> getFeedContent(@Query("limit") int limit, @Query("offset") int offset);
 
 }
