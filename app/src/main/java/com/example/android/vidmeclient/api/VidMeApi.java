@@ -1,8 +1,10 @@
 package com.example.android.vidmeclient.api;
 
+import com.example.android.vidmeclient.model.entities.AuthResponse;
 import com.example.android.vidmeclient.model.entities.ContentResponse;
 
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -17,8 +19,11 @@ public interface VidMeApi {
 
     @GET("/videos/new")
     Observable<ContentResponse> getNewContent(@Query("limit") int limit, @Query("offset") int offset);
-    
+
     @GET("/videos/feed")
     Observable<ContentResponse> getFeedContent(@Query("limit") int limit, @Query("offset") int offset);
+
+    @POST("/auth/create")
+    Observable<AuthResponse> login(@Query("username") String username, @Query("password") String password);
 
 }
