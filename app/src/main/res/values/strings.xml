@@ -11,4 +11,5 @@
     <string name="login_button">Login</string>
     <string name="create_account">No account yet? Create one</string>
     <string name="request_execution_has_failed">Request execution has failed. Check your internet connection</string>
+    <string name="toolbar_sign_out">Logout</string>
 </resources>
