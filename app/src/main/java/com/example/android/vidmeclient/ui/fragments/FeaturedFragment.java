@@ -35,7 +35,7 @@ import butterknife.ButterKnife;
  * Created by fbrsw on 27.11.2017.
  */
 
-public class FeaturedFragment extends Fragment implements FeaturedContentView {
+public class FeaturedFragment extends BaseFragment implements FeaturedContentView {
 
     private VideoContentAdapter adapter;
 
@@ -69,6 +69,13 @@ public class FeaturedFragment extends Fragment implements FeaturedContentView {
         swiper.setOnRefreshListener(this::loadFragmentSources);
         loadFragmentSources();
         return view;
+    }
+
+    @Override
+    public void networkConnected() {
+        if (adapter.getItemCount() <= offset)
+            presenter.getFeaturedContent(Constants.VIDEO_COUNT_LIMIT, offset);
+        else showText(adapter.getItemCount() + " " + offset);
     }
 
     @Override
@@ -107,11 +114,16 @@ public class FeaturedFragment extends Fragment implements FeaturedContentView {
 
 
     public AppComponent getAppComponent() {
-        return ((AppVidMe) getActivity().getApplication()).appComponent();
+        return getApp().appComponent();
+    }
+
+    private AppVidMe getApp() {
+        return (AppVidMe) getActivity().getApplication();
     }
 
 
     private void showText(String text) {
         Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
     }
+
 }
