@@ -21,7 +21,7 @@ public interface VidMeApi {
     Observable<ContentResponse> getNewContent(@Query("limit") int limit, @Query("offset") int offset);
 
     @GET("/videos/feed")
-    Observable<ContentResponse> getFeedContent(@Query("limit") int limit, @Query("offset") int offset);
+    Observable<ContentResponse> getFeedContent(@Query("limit") int limit, @Query("offset") int offset, @Query("token") String token);
 
     @POST("/auth/create")
     Observable<AuthResponse> login(@Query("username") String username, @Query("password") String password);
