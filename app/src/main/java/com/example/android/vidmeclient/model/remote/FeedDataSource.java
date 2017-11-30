@@ -17,7 +17,7 @@ public class FeedDataSource implements IFeedDataSource {
     }
 
     @Override
-    public Observable<ContentResponse> getFeedContent(int lim, int off) {
-        return vidMeApi.getFeedContent(lim, off);
+    public Observable<ContentResponse> getFeedContent(int lim, int off, String token) {
+        return vidMeApi.getFeedContent(lim, off, token);
     }
 }

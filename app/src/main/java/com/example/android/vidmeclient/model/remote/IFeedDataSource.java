@@ -10,5 +10,5 @@ import rx.Observable;
 
 public interface IFeedDataSource {
 
-    Observable<ContentResponse> getFeedContent(int lim, int off);
+    Observable<ContentResponse> getFeedContent(int lim, int off, String token);
 }
