@@ -21,8 +21,8 @@ public class FeedDataPresenter extends BasePresenter<FeedContentView> {
         this.feedDataSource = feedDataSource;
     }
 
-    public void getFeedContent(int lim, int off) {
-        subscribe(feedDataSource.getFeedContent(lim, off)
+    public void getFeedContent(int lim, int off, String token) {
+        subscribe(feedDataSource.getFeedContent(lim, off, token)
                 .retryWhen(new RxRetryWithDelay())
                 .map(ContentResponse::getVideos)
                 .subscribeOn(Schedulers.io())
