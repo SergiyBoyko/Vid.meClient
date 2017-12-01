@@ -10,13 +10,10 @@ import com.google.gson.annotations.SerializedName;
 public class Auth {
 
     @SerializedName("token")
-    @Expose
     private String token;
     @SerializedName("expires")
-    @Expose
     private String expires;
     @SerializedName("user_id")
-    @Expose
     private String userId;
 
     public String getToken() {

@@ -11,22 +11,18 @@ import java.util.List;
 
 public class ContentResponse {
     @SerializedName("status")
-    @Expose
     private Boolean status;
     @SerializedName("page")
-    @Expose
     private Page page;
     @SerializedName("videos")
-    @Expose
     private List<Video> videos = null;
 //    @SerializedName("watching")
 //    @Expose
 //    private Watching watching;
-    @SerializedName("viewerVotes")
-    @Expose
-    private List<Object> viewerVotes = null;
+//    @SerializedName("viewerVotes")
+//    @Expose
+//    private List<Object> viewerVotes = null;
     @SerializedName("viewerReposts")
-    @Expose
     private Object viewerReposts;
 
     public Boolean getStatus() {
@@ -61,13 +57,13 @@ public class ContentResponse {
 //        this.watching = watching;
 //    }
 
-    public List<Object> getViewerVotes() {
-        return viewerVotes;
-    }
-
-    public void setViewerVotes(List<Object> viewerVotes) {
-        this.viewerVotes = viewerVotes;
-    }
+//    public List<Object> getViewerVotes() {
+//        return viewerVotes;
+//    }
+//
+//    public void setViewerVotes(List<Object> viewerVotes) {
+//        this.viewerVotes = viewerVotes;
+//    }
 
     public Object getViewerReposts() {
         return viewerReposts;

@@ -9,19 +9,14 @@ import com.google.gson.annotations.SerializedName;
 
 public class Format {
     @SerializedName("type")
-    @Expose
     private String type;
     @SerializedName("uri")
-    @Expose
     private String uri;
     @SerializedName("width")
-    @Expose
     private Object width;
     @SerializedName("height")
-    @Expose
     private Object height;
     @SerializedName("version")
-    @Expose
     private Integer version;
 
     public String getType() {

@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.android.vidmeclient.Constants;
+import com.example.android.vidmeclient.common.Constants;
 import com.example.android.vidmeclient.R;
 import com.example.android.vidmeclient.model.entities.Video;
 import com.example.android.vidmeclient.ui.activities.VideoPlayerActivity;

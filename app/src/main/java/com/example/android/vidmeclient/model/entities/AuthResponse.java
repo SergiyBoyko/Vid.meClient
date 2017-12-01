@@ -10,19 +10,14 @@ import com.google.gson.annotations.SerializedName;
 public class AuthResponse {
 
     @SerializedName("status")
-    @Expose
     private Boolean status;
     @SerializedName("auth")
-    @Expose
     private Auth auth;
     @SerializedName("user")
-    @Expose
     private User user;
     @SerializedName("code")
-    @Expose
     private String code;
     @SerializedName("error")
-    @Expose
     private String error;
 
     public String getCode() {

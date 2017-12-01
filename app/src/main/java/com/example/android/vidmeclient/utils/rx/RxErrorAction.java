@@ -28,11 +28,12 @@ public class RxErrorAction implements Action1<Throwable> {
 
     public RxErrorAction(Context context, BaseView view) {
         this.context = context;
+        this.view = view;
     }
 
     @Override
     public void call(Throwable throwable) {
-        System.out.println("13579234567891231232412416");
+        System.out.println("13579234567891231232412416"); // TODO
         throwable.printStackTrace();
 
         if (throwable instanceof HttpException) {
