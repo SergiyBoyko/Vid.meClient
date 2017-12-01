@@ -1,7 +1,7 @@
 package com.example.android.vidmeclient.presenters;
 
 import com.example.android.vidmeclient.model.entities.ContentResponse;
-import com.example.android.vidmeclient.model.remote.INewDataSource;
+import com.example.android.vidmeclient.model.INewDataSource;
 import com.example.android.vidmeclient.utils.rx.RxErrorAction;
 import com.example.android.vidmeclient.utils.rx.RxRetryWithDelay;
 import com.example.android.vidmeclient.views.NewContentView;
@@ -22,7 +22,7 @@ public class NewDataPresenter extends BasePresenter<NewContentView> {
     }
 
     public void getNewContent(int lim, int off) {
-        subscribe(newDataSource.getNewContent(lim, off)
+        addSubscription(newDataSource.getNewContent(lim, off)
                 .retryWhen(new RxRetryWithDelay())
                 .map(ContentResponse::getVideos)
                 .subscribeOn(Schedulers.io())

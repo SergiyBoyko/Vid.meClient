@@ -1,7 +1,9 @@
 package com.example.android.vidmeclient.presenters;
 
+import android.widget.Toast;
+
 import com.example.android.vidmeclient.model.entities.ContentResponse;
-import com.example.android.vidmeclient.model.remote.IFeedDataSource;
+import com.example.android.vidmeclient.model.IFeedDataSource;
 import com.example.android.vidmeclient.utils.rx.RxErrorAction;
 import com.example.android.vidmeclient.utils.rx.RxRetryWithDelay;
 import com.example.android.vidmeclient.views.FeedContentView;
@@ -22,7 +24,7 @@ public class FeedDataPresenter extends BasePresenter<FeedContentView> {
     }
 
     public void getFeedContent(int lim, int off, String token) {
-        subscribe(feedDataSource.getFeedContent(lim, off, token)
+        addSubscription(feedDataSource.getFeedContent(lim, off, token)
                 .retryWhen(new RxRetryWithDelay())
                 .map(ContentResponse::getVideos)
                 .subscribeOn(Schedulers.io())
