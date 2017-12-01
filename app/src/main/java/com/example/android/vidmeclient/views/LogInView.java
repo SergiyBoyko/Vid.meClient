@@ -9,4 +9,6 @@ import com.example.android.vidmeclient.model.entities.AuthResponse;
 public interface LogInView extends BaseView {
 
     void onLoginSuccess(AuthResponse authResponse);
+
+    void onLoginFailed(String message);
 }
