@@ -9,5 +9,7 @@ public class Constants {
 
     public static final String VID_ME_API = "https://api.vid.me/";
 
+    public static final String VIDEO_ID  = "video_id";
+
     public static final int VIDEO_COUNT_LIMIT = 10;
 }
