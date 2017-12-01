@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.android.vidmeclient.Constants;
 import com.example.android.vidmeclient.R;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -41,7 +42,7 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class VideoPlayerActivity extends AppCompatActivity implements VideoRendererEventListener{
+public class VideoPlayerActivity extends AppCompatActivity implements VideoRendererEventListener {
     private static final String CURRENT_VIDEO_POS = "video_pos";
     private final String TAG = this.getClass().getSimpleName();
     private SimpleExoPlayerView simpleExoPlayerView;
@@ -56,7 +57,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements VideoRende
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
-        
+
         ButterKnife.bind(this);
 
         // 1. Create a default TrackSelector
@@ -79,12 +80,15 @@ public class VideoPlayerActivity extends AppCompatActivity implements VideoRende
         // Bind the player to the view.
         simpleExoPlayerView.setPlayer(player);
 
-        Uri videoUri = Uri.parse("https://api.vid.me/video/18239073/stream?format=hls");
+//        String def = "https://api.vid.me/video/18239073/stream?format=hls";
+        String video = getIntent().getStringExtra(Constants.VIDEO_ID);
+        Uri videoUri = Uri.parse(video);
 
         //Measures bandwidth during playback. Can be null if not required.
         DefaultBandwidthMeter bandwidthMeterA = new DefaultBandwidthMeter();
         //Produces DataSource instances through which media data is loaded.
-        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "exoplayer2example"), bandwidthMeterA);
+        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(this,
+                Util.getUserAgent(this, "Vid.meClient"), bandwidthMeterA);
         //Produces Extractor instances for parsing the media data.
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 
@@ -151,12 +155,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements VideoRende
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        player.stop();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         player.release();
@@ -194,4 +192,5 @@ public class VideoPlayerActivity extends AppCompatActivity implements VideoRende
         progressBar.setVisibility(View.VISIBLE);
         pos = player.getCurrentPosition();
     }
+
 }
