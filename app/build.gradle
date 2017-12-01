@@ -23,6 +23,24 @@ android {
     }
 }
 
+allprojects {
+    repositories {
+        jcenter()
+        maven {
+            url "https://maven.google.com"
+        }
+    }
+}
+
+// exoplayer
+repositories {
+    jcenter()
+    maven {
+        url "http://repo.brightcove.com/releases"
+    }
+}
+
+// retrolambda
 buildscript {
     repositories {
         mavenCentral()
@@ -46,7 +64,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.4.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     // design support
@@ -79,7 +97,9 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     // swipy support
     compile 'com.github.omadahealth:swipy:1.2.3@aar'
-
+    // exoplayer support
+    compile "com.brightcove.player:exoplayer:4.7.2"
+    compile 'com.google.android.exoplayer:exoplayer:r2.5.1'
 
     testCompile 'junit:junit:4.12'
 }
