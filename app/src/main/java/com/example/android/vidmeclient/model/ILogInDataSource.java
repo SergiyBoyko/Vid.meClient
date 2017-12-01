@@ -1,4 +1,4 @@
-package com.example.android.vidmeclient.model.remote;
+package com.example.android.vidmeclient.model;
 
 import com.example.android.vidmeclient.model.entities.AuthResponse;
 import com.example.android.vidmeclient.model.entities.ContentResponse;
