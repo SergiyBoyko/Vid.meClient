@@ -27,7 +27,7 @@ public class BasePresenter<T extends BaseView> {
         compositeSubscription.clear();
     }
 
-    protected Subscription subscribe(Subscription subscription) {
+    protected Subscription addSubscription(Subscription subscription) {
         compositeSubscription.add(subscription);
         return subscription;
     }
