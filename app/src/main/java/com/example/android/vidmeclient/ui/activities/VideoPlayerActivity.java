@@ -3,13 +3,11 @@ package com.example.android.vidmeclient.ui.activities;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Surface;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.example.android.vidmeclient.Constants;
+import com.example.android.vidmeclient.common.Constants;
 import com.example.android.vidmeclient.R;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -43,12 +41,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class VideoPlayerActivity extends AppCompatActivity implements VideoRendererEventListener {
+
     private static final String CURRENT_VIDEO_POS = "video_pos";
     private final String TAG = this.getClass().getSimpleName();
     private SimpleExoPlayerView simpleExoPlayerView;
     private SimpleExoPlayer player;
     private long pos = 0;
-
 
     @BindView(R.id.progress)
     ProgressBar progressBar;
@@ -60,6 +58,65 @@ public class VideoPlayerActivity extends AppCompatActivity implements VideoRende
 
         ButterKnife.bind(this);
 
+        prepareExoPlayer();
+
+        player.setPlayWhenReady(true); //run file/link when ready to play.
+        player.setVideoDebugListener(this); //for listening to resolution change and  outputing the resolution
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(CURRENT_VIDEO_POS, player.getCurrentPosition());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        pos = savedInstanceState.getLong(CURRENT_VIDEO_POS);
+        player.seekTo(pos);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        player.release();
+    }
+
+    @Override
+    public void onVideoEnabled(DecoderCounters counters) {
+        progressBar.setVisibility(View.GONE);
+        player.seekTo(pos);
+
+    }
+
+    @Override
+    public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
+    }
+
+    @Override
+    public void onVideoInputFormatChanged(Format format) {
+    }
+
+    @Override
+    public void onDroppedFrames(int count, long elapsedMs) {
+    }
+
+    @Override
+    public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+    }
+
+    @Override
+    public void onRenderedFirstFrame(Surface surface) {
+    }
+
+    @Override
+    public void onVideoDisabled(DecoderCounters counters) {
+        progressBar.setVisibility(View.VISIBLE);
+        pos = player.getCurrentPosition();
+    }
+
+    private void prepareExoPlayer() {
         // 1. Create a default TrackSelector
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
@@ -80,7 +137,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements VideoRende
         // Bind the player to the view.
         simpleExoPlayerView.setPlayer(player);
 
-//        String def = "https://api.vid.me/video/18239073/stream?format=hls";
+        // Get video uri
         String video = getIntent().getStringExtra(Constants.VIDEO_ID);
         Uri videoUri = Uri.parse(video);
 
@@ -136,61 +193,5 @@ public class VideoPlayerActivity extends AppCompatActivity implements VideoRende
             }
         });
 
-        player.setPlayWhenReady(true); //run file/link when ready to play.
-        player.setVideoDebugListener(this); //for listening to resolution change and  outputing the resolution
-
     }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putLong(CURRENT_VIDEO_POS, player.getCurrentPosition());
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        pos = savedInstanceState.getLong(CURRENT_VIDEO_POS);
-        player.seekTo(pos);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        player.release();
-    }
-
-    @Override
-    public void onVideoEnabled(DecoderCounters counters) {
-        progressBar.setVisibility(View.GONE);
-        player.seekTo(pos);
-
-    }
-
-    @Override
-    public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-    }
-
-    @Override
-    public void onVideoInputFormatChanged(Format format) {
-    }
-
-    @Override
-    public void onDroppedFrames(int count, long elapsedMs) {
-    }
-
-    @Override
-    public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-    }
-
-    @Override
-    public void onRenderedFirstFrame(Surface surface) {
-    }
-
-    @Override
-    public void onVideoDisabled(DecoderCounters counters) {
-        progressBar.setVisibility(View.VISIBLE);
-        pos = player.getCurrentPosition();
-    }
-
 }
