@@ -5,6 +5,8 @@ import android.widget.Toast;
 
 import com.example.android.vidmeclient.R;
 import com.example.android.vidmeclient.model.entities.AuthResponse;
+import com.example.android.vidmeclient.views.BaseView;
+import com.example.android.vidmeclient.views.LogInView;
 import com.google.gson.Gson;
 
 import retrofit2.adapter.rxjava.HttpException;
@@ -18,7 +20,13 @@ public class RxErrorAction implements Action1<Throwable> {
 
     private final Context context;
 
+    private BaseView view;
+
     public RxErrorAction(Context context) {
+        this.context = context;
+    }
+
+    public RxErrorAction(Context context, BaseView view) {
         this.context = context;
     }
 
@@ -30,14 +38,13 @@ public class RxErrorAction implements Action1<Throwable> {
         if (throwable instanceof HttpException) {
             HttpException httpException = (HttpException) throwable;
             try {
-                if (httpException.code() / 100 == 4) {
+                if (httpException.code() / 100 == 4 && view instanceof LogInView) {
                     String json = httpException.response().errorBody().string();
                     Gson gson = new Gson();
                     AuthResponse errorDto = gson.fromJson(json, AuthResponse.class);
-                    Toast.makeText(context, errorDto.getError(), Toast.LENGTH_LONG).show();
+                    ((LogInView) view).onLoginFailed(errorDto.getError());
                 } else showRequestError();
             } catch (Exception e) {
-                Toast.makeText(context, "BIG PROBLEMS!!", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         } else showRequestError();
