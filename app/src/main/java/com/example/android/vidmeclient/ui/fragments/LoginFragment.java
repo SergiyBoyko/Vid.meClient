@@ -52,6 +52,8 @@ public class LoginFragment extends Fragment implements LogInView {
     @Inject
     LogInPresenter presenter;
 
+    private ProgressDialog progressDialog;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,15 +83,17 @@ public class LoginFragment extends Fragment implements LogInView {
 
             @Override
             public void onClick(View v) {
-//                showText("SignUP");
-//                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-//                startActivityForResult(intent, REQUEST_SIGNUP);
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.VID_ME_LINK));
                 startActivity(browserIntent);
 
 
             }
         });
+
+
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Authenticating...");
 
         presenter.setView(this);
         return view;
@@ -106,39 +110,39 @@ public class LoginFragment extends Fragment implements LogInView {
     private void login() {
 
         if (!validate()) {
-            onLoginFailed();
+            onLoginFailed("incorrect credentials");
             return;
         }
 
         loginButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(getContext());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
         String username = usernameText.getText().toString();
         String password = passwordText.getText().toString();
 
-        showText("login with " + username + " " + password);
-
         presenter.login(username, password);
 
-        progressDialog.hide();
-        loginButton.setEnabled(true);
-        // TODO: Implement authentication logic here.
 
     }
 
     @Override
     public void onLoginSuccess(AuthResponse authResponse) {
         loginButton.setEnabled(true);
+        progressDialog.hide();
         if (authResponse.getStatus()) {
             showText(authResponse.getUser().getUsername() + " success");
             saveUser(authResponse);
             finish();
         } else showText(authResponse.getError());
 
+    }
+
+    @Override
+    public void onLoginFailed(String message) {
+        showText(message);
+        loginButton.setEnabled(true);
+        progressDialog.hide();
     }
 
     private void saveUser(AuthResponse authResponse) {
@@ -158,11 +162,6 @@ public class LoginFragment extends Fragment implements LogInView {
         trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         trans.addToBackStack(null);
         trans.commit();
-    }
-
-    public void onLoginFailed() {
-        showText("Login failed");
-        loginButton.setEnabled(true);
     }
 
     public boolean validate() {
