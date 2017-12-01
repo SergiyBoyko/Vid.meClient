@@ -1,4 +1,4 @@
-package com.example.android.vidmeclient;
+package com.example.android.vidmeclient.common;
 
 /**
  * Created by fbrsw on 27.11.2017.
