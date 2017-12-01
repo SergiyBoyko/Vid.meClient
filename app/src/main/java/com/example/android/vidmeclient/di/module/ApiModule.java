@@ -1,16 +1,20 @@
 package com.example.android.vidmeclient.di.module;
 
 
-import com.example.android.vidmeclient.Constants;
+import android.content.SharedPreferences;
+
+import com.example.android.vidmeclient.common.Constants;
 import com.example.android.vidmeclient.api.VidMeApi;
-import com.example.android.vidmeclient.model.remote.FeaturedDataSource;
-import com.example.android.vidmeclient.model.remote.FeedDataSource;
-import com.example.android.vidmeclient.model.remote.IFeaturedDataSource;
-import com.example.android.vidmeclient.model.remote.IFeedDataSource;
-import com.example.android.vidmeclient.model.remote.ILogInDataSource;
-import com.example.android.vidmeclient.model.remote.INewDataSource;
-import com.example.android.vidmeclient.model.remote.LogInDataSource;
-import com.example.android.vidmeclient.model.remote.NewDataSource;
+import com.example.android.vidmeclient.model.IUserDataSource;
+import com.example.android.vidmeclient.model.prefs.UserDataSource;
+import com.example.android.vidmeclient.model.remote.FeaturedRemoteDataSource;
+import com.example.android.vidmeclient.model.remote.FeedRemoteDataSource;
+import com.example.android.vidmeclient.model.IFeaturedDataSource;
+import com.example.android.vidmeclient.model.IFeedDataSource;
+import com.example.android.vidmeclient.model.ILogInDataSource;
+import com.example.android.vidmeclient.model.INewDataSource;
+import com.example.android.vidmeclient.model.remote.LogInRemoteDataSource;
+import com.example.android.vidmeclient.model.remote.NewRemoteDataSource;
 
 import javax.inject.Singleton;
 
@@ -41,25 +45,31 @@ public class ApiModule {
     @Provides
     @Singleton
     IFeaturedDataSource provideFeaturedDataSource(Retrofit retrofit) {
-        return new FeaturedDataSource(retrofit.create(VidMeApi.class));
+        return new FeaturedRemoteDataSource(retrofit.create(VidMeApi.class));
     }
 
     @Provides
     @Singleton
     INewDataSource provideNewDataSource(Retrofit retrofit) {
-        return new NewDataSource(retrofit.create(VidMeApi.class));
+        return new NewRemoteDataSource(retrofit.create(VidMeApi.class));
     }
 
     @Provides
     @Singleton
     IFeedDataSource provideFeedDataSource(Retrofit retrofit) {
-        return new FeedDataSource(retrofit.create(VidMeApi.class));
+        return new FeedRemoteDataSource(retrofit.create(VidMeApi.class));
     }
 
     @Provides
     @Singleton
     ILogInDataSource provideLogInDataSource(Retrofit retrofit) {
-        return new LogInDataSource(retrofit.create(VidMeApi.class));
+        return new LogInRemoteDataSource(retrofit.create(VidMeApi.class));
+    }
+
+    @Provides
+    @Singleton
+    IUserDataSource provideUserDataSource(SharedPreferences preferences) {
+        return new UserDataSource(preferences);
     }
 
 }

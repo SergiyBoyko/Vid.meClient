@@ -1,9 +1,10 @@
 package com.example.android.vidmeclient.di.component;
 
-import com.example.android.vidmeclient.model.remote.IFeaturedDataSource;
-import com.example.android.vidmeclient.model.remote.IFeedDataSource;
-import com.example.android.vidmeclient.model.remote.ILogInDataSource;
-import com.example.android.vidmeclient.model.remote.INewDataSource;
+import com.example.android.vidmeclient.model.IFeaturedDataSource;
+import com.example.android.vidmeclient.model.IFeedDataSource;
+import com.example.android.vidmeclient.model.ILogInDataSource;
+import com.example.android.vidmeclient.model.INewDataSource;
+import com.example.android.vidmeclient.model.IUserDataSource;
 
 import retrofit2.Retrofit;
 
@@ -22,5 +23,7 @@ public interface ApiComponent {
     IFeedDataSource feedVideosDataSource();
 
     ILogInDataSource logInDataSource();
+
+    IUserDataSource userDataSource();
 
 }
