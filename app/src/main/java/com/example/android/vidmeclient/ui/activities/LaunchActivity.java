@@ -18,8 +18,12 @@ import android.widget.Toast;
 import com.example.android.vidmeclient.AppVidMe;
 import com.example.android.vidmeclient.R;
 import com.example.android.vidmeclient.di.component.AppComponent;
+import com.example.android.vidmeclient.di.component.DaggerPresentersComponent;
+import com.example.android.vidmeclient.di.module.PresentersModule;
+import com.example.android.vidmeclient.model.IUserDataSource;
 import com.example.android.vidmeclient.model.entities.AuthResponse;
 import com.example.android.vidmeclient.ui.fragments.FeaturedFragment;
+import com.example.android.vidmeclient.ui.fragments.FeedFragment;
 import com.example.android.vidmeclient.ui.fragments.NewFragment;
 import com.example.android.vidmeclient.ui.fragments.RootFragment;
 import com.google.gson.Gson;
@@ -27,18 +31,26 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class LaunchActivity extends AppCompatActivity {
 
     private Menu menu;
     private RootFragment feedState;
-    private boolean userLogged;
+
+    @Inject
+    IUserDataSource mUserDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
 
-        loadUserProfileIfExists();
+        DaggerPresentersComponent.builder()
+                .appComponent(getAppComponent())
+                .presentersModule(new PresentersModule())
+                .build()
+                .inject(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -53,15 +65,6 @@ public class LaunchActivity extends AppCompatActivity {
 
     }
 
-    private void loadUserProfileIfExists() {
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        String user = sharedPreferences.getString("user", null);
-        userLogged = user != null;
-        if (userLogged) {
-            getApp().setUserProfile(new Gson().fromJson(user, AuthResponse.class));
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -70,7 +73,7 @@ public class LaunchActivity extends AppCompatActivity {
         this.menu = menu;
 
         MenuItem item = menu.findItem(R.id.action_sign_out);
-        item.setVisible(userLogged);
+        item.setVisible(mUserDataSource.isAuthorized());
 
         return true;
     }
@@ -84,9 +87,7 @@ public class LaunchActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_sign_out) {
-            SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-            sharedPreferences.edit().clear().apply();
-            getApp().setUserProfile(null);
+            mUserDataSource.clear();
             item.setVisible(false);
             feedState.notifyUpdates();
             return true;
@@ -98,9 +99,9 @@ public class LaunchActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
 
-        adapter.addFragment(new FeaturedFragment(), getResources().getString(R.string.featured_title));
-        adapter.addFragment(new NewFragment(), getResources().getString(R.string.new_title));
-        feedState = new RootFragment();
+        adapter.addFragment(FeaturedFragment.newInstance(), getResources().getString(R.string.featured_title));
+        adapter.addFragment(NewFragment.newInstance(), getResources().getString(R.string.new_title));
+        feedState = RootFragment.newInstance();
         adapter.addFragment(feedState, getResources().getString(R.string.feed_title));
 
         viewPager.setAdapter(adapter);
@@ -113,10 +114,8 @@ public class LaunchActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                if (position != 2 && getCurrentFocus() != null) {
-                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                }
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
             }
 
             @Override
@@ -126,7 +125,6 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
     public void showLogOutMenuItem(boolean action) {
-        showText(menu == null ? "null" : "not null");
         if (menu != null) {
             MenuItem item = menu.findItem(R.id.action_sign_out);
             item.setVisible(action);
