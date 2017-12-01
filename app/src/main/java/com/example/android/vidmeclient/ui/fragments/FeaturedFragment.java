@@ -3,7 +3,6 @@ package com.example.android.vidmeclient.ui.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.android.vidmeclient.AppVidMe;
-import com.example.android.vidmeclient.Constants;
+import com.example.android.vidmeclient.common.Constants;
 import com.example.android.vidmeclient.R;
 import com.example.android.vidmeclient.di.component.AppComponent;
 import com.example.android.vidmeclient.di.component.DaggerPresentersComponent;
@@ -39,7 +38,7 @@ public class FeaturedFragment extends BaseFragment implements FeaturedContentVie
 
     private VideoContentAdapter adapter;
 
-    private int offset = 0;
+    private int offset;
 
     @BindView(R.id.my_recycler_view)
     RecyclerView recyclerView;
@@ -49,9 +48,8 @@ public class FeaturedFragment extends BaseFragment implements FeaturedContentVie
     @Inject
     FeaturedDataPresenter presenter;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public static FeaturedFragment newInstance() {
+        return new FeaturedFragment();
     }
 
     @Nullable

@@ -1,9 +1,7 @@
 package com.example.android.vidmeclient.ui.fragments;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.vidmeclient.AppVidMe;
-import com.example.android.vidmeclient.Constants;
+import com.example.android.vidmeclient.common.Constants;
 import com.example.android.vidmeclient.R;
 import com.example.android.vidmeclient.di.component.AppComponent;
 import com.example.android.vidmeclient.di.component.DaggerPresentersComponent;
@@ -27,7 +25,6 @@ import com.example.android.vidmeclient.model.entities.AuthResponse;
 import com.example.android.vidmeclient.presenters.LogInPresenter;
 import com.example.android.vidmeclient.ui.activities.LaunchActivity;
 import com.example.android.vidmeclient.views.LogInView;
-import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
@@ -54,9 +51,8 @@ public class LoginFragment extends Fragment implements LogInView {
 
     private ProgressDialog progressDialog;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public static LoginFragment newInstance() {
+        return new LoginFragment();
     }
 
     @Nullable
@@ -93,7 +89,7 @@ public class LoginFragment extends Fragment implements LogInView {
 
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
+        progressDialog.setMessage(getResources().getString(R.string.authenticating));
 
         presenter.setView(this);
         return view;
@@ -110,7 +106,7 @@ public class LoginFragment extends Fragment implements LogInView {
     private void login() {
 
         if (!validate()) {
-            onLoginFailed("incorrect credentials");
+            onLoginFailed(getResources().getString(R.string.incorrect_credentials));
             return;
         }
 
@@ -122,8 +118,6 @@ public class LoginFragment extends Fragment implements LogInView {
         String password = passwordText.getText().toString();
 
         presenter.login(username, password);
-
-
     }
 
     @Override
@@ -131,9 +125,7 @@ public class LoginFragment extends Fragment implements LogInView {
         loginButton.setEnabled(true);
         progressDialog.hide();
         if (authResponse.getStatus()) {
-            showText(authResponse.getUser().getUsername() + " success");
-            saveUser(authResponse);
-            finish();
+            startFeedFragment();
         } else showText(authResponse.getError());
 
     }
@@ -145,16 +137,7 @@ public class LoginFragment extends Fragment implements LogInView {
         progressDialog.hide();
     }
 
-    private void saveUser(AuthResponse authResponse) {
-        getApp().setUserProfile(authResponse);
-        Gson gson = new Gson();
-        String json = gson.toJson(authResponse);
-        SharedPreferences sharedPreferences =
-                getActivity().getPreferences(Context.MODE_PRIVATE);
-        sharedPreferences.edit().putString("user", json).apply();
-    }
-
-    private void finish() {
+    private void startFeedFragment() {
         ((LaunchActivity) getActivity()).showLogOutMenuItem(true);
 
         FragmentTransaction trans = getFragmentManager().beginTransaction();
@@ -165,35 +148,35 @@ public class LoginFragment extends Fragment implements LogInView {
     }
 
     public boolean validate() {
-        boolean valid = true;
 
         String username = usernameText.getText().toString();
         String password = passwordText.getText().toString();
 
         if (username.isEmpty() || username.length() < 4) {
             usernameText.setError("minimum 4 symbols");
-            valid = false;
-        } else if (Character.isDigit(username.charAt(0))) {
+            return false;
+        }
+        if (Character.isDigit(username.charAt(0))) {
             usernameText.setError("username cannot begin with digit");
-            valid = false;
+            return false;
         } else if (username.contains(" ")) {
             usernameText.setError("username cannot contain space");
-            valid = false;
+            return false;
         } else {
             usernameText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4) {
             passwordText.setError("minimum 4 symbols");
-            valid = false;
+            return false;
         } else if (password.contains(" ")) {
             usernameText.setError("password cannot contain space");
-            valid = false;
+            return false;
         } else {
             passwordText.setError(null);
         }
 
-        return valid;
+        return true;
     }
 
     private void showText(String text) {
