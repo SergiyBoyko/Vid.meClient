@@ -1,11 +1,16 @@
 package com.example.android.vidmeclient.ui.activities;
 
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Surface;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.android.vidmeclient.common.Constants;
 import com.example.android.vidmeclient.R;
@@ -46,7 +51,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements VideoRende
     private final String TAG = this.getClass().getSimpleName();
     private SimpleExoPlayerView simpleExoPlayerView;
     private SimpleExoPlayer player;
-    private long pos = 0;
+    private long pos;
 
     @BindView(R.id.progress)
     ProgressBar progressBar;
@@ -54,12 +59,23 @@ public class VideoPlayerActivity extends AppCompatActivity implements VideoRende
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // remove title
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        // set landscape if auto rotation disabled
+        if (android.provider.Settings.System.getInt(getContentResolver(),
+                Settings.System.ACCELEROMETER_ROTATION, 0) != 1) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+
         setContentView(R.layout.activity_video_player);
 
         ButterKnife.bind(this);
-
         prepareExoPlayer();
 
+        player.seekTo(pos);
         player.setPlayWhenReady(true); //run file/link when ready to play.
         player.setVideoDebugListener(this); //for listening to resolution change and  outputing the resolution
     }
@@ -74,13 +90,18 @@ public class VideoPlayerActivity extends AppCompatActivity implements VideoRende
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         pos = savedInstanceState.getLong(CURRENT_VIDEO_POS);
-        player.seekTo(pos);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         player.release();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Toast.makeText(this, "Video can be played in background", Toast.LENGTH_LONG).show();
     }
 
     @Override
