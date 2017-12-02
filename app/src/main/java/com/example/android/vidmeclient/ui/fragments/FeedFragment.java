@@ -68,7 +68,10 @@ public class FeedFragment extends BaseFragment implements FeedContentView {
                 .build()
                 .inject(this);
 
-        swiper.setOnRefreshListener(this::loadFragmentSources);
+        swiper.setOnRefreshListener(() -> {
+            loadFragmentSources();
+            adapter.stopPlaying();
+        });
         loadFragmentSources();
         return view;
     }

@@ -64,7 +64,10 @@ public class FeaturedFragment extends BaseFragment implements FeaturedContentVie
                 .build()
                 .inject(this);
 
-        swiper.setOnRefreshListener(this::loadFragmentSources);
+        swiper.setOnRefreshListener(() -> {
+            loadFragmentSources();
+            adapter.stopPlaying();
+        });
         loadFragmentSources();
         return view;
     }
@@ -73,7 +76,6 @@ public class FeaturedFragment extends BaseFragment implements FeaturedContentVie
     public void networkConnected() {
         if (adapter.getItemCount() <= offset)
             presenter.getFeaturedContent(Constants.VIDEO_COUNT_LIMIT, offset);
-        else showText(adapter.getItemCount() + " " + offset);
     }
 
     @Override

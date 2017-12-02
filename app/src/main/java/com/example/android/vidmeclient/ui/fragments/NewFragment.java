@@ -64,7 +64,10 @@ public class NewFragment extends BaseFragment implements NewContentView {
                 .build()
                 .inject(this);
 
-        swiper.setOnRefreshListener(this::loadFragmentSources);
+        swiper.setOnRefreshListener(() -> {
+            loadFragmentSources();
+            adapter.stopPlaying();
+        });
         loadFragmentSources();
         return view;
     }
@@ -73,7 +76,6 @@ public class NewFragment extends BaseFragment implements NewContentView {
     public void networkConnected() {
         if (adapter.getItemCount() <= offset)
             presenter.getNewContent(Constants.VIDEO_COUNT_LIMIT, offset);
-        else showText(adapter.getItemCount() + " " + offset);
     }
 
     @Override

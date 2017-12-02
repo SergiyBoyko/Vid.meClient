@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,12 +25,15 @@ import com.example.android.vidmeclient.di.module.PresentersModule;
 import com.example.android.vidmeclient.model.entities.AuthResponse;
 import com.example.android.vidmeclient.presenters.LogInPresenter;
 import com.example.android.vidmeclient.ui.activities.LaunchActivity;
+import com.example.android.vidmeclient.utils.InternetConnectivityUtil;
 import com.example.android.vidmeclient.views.LogInView;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**
  * Created by fbrsw on 27.11.2017.
@@ -67,23 +71,20 @@ public class LoginFragment extends Fragment implements LogInView {
                 .build()
                 .inject(this);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(v -> {
+            login();
 
-            @Override
-            public void onClick(View v) {
-                login();
+            // hide keyboard if its possible
+            if (getActivity().getCurrentFocus() != null) {
+                InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
             }
         });
 
-        signUpLink.setOnClickListener(new View.OnClickListener() {
+        signUpLink.setOnClickListener(v -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.VID_ME_LINK));
+            startActivity(browserIntent);
 
-            @Override
-            public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.VID_ME_LINK));
-                startActivity(browserIntent);
-
-
-            }
         });
 
 
@@ -107,6 +108,9 @@ public class LoginFragment extends Fragment implements LogInView {
 
         if (!validate()) {
             onLoginFailed(getResources().getString(R.string.incorrect_credentials));
+            return;
+        } else if (!InternetConnectivityUtil.isConnected(this.getContext())) {
+            onLoginFailed(getResources().getString(R.string.network_problems));
             return;
         }
 
@@ -153,24 +157,24 @@ public class LoginFragment extends Fragment implements LogInView {
         String password = passwordText.getText().toString();
 
         if (username.isEmpty() || username.length() < 4) {
-            usernameText.setError("minimum 4 symbols");
+            usernameText.setError(getResources().getString(R.string.minimum_4_sym_message));
             return false;
         }
         if (Character.isDigit(username.charAt(0))) {
-            usernameText.setError("username cannot begin with digit");
+            usernameText.setError(getResources().getString(R.string.first_digit_username_message));
             return false;
         } else if (username.contains(" ")) {
-            usernameText.setError("username cannot contain space");
+            usernameText.setError(getResources().getString(R.string.cannot_contain_space_username_message));
             return false;
         } else {
             usernameText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4) {
-            passwordText.setError("minimum 4 symbols");
+            passwordText.setError(getResources().getString(R.string.minimum_4_sym_message));
             return false;
         } else if (password.contains(" ")) {
-            usernameText.setError("password cannot contain space");
+            usernameText.setError(getResources().getString(R.string.cannot_contain_space_pass_message));
             return false;
         } else {
             passwordText.setError(null);
