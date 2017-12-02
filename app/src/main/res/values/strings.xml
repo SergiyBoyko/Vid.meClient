@@ -13,5 +13,10 @@
     <string name="request_execution_has_failed">Request execution has failed. Check your internet connection</string>
     <string name="toolbar_sign_out">Logout</string>
     <string name="incorrect_credentials">incorrect credentials</string>
-    <string name="authenticating">Authenticating...</string>
+    <string name="authenticating">Authenticating…</string>
+    <string name="minimum_4_sym_message">minimum 4 symbols</string>
+    <string name="first_digit_username_message">username cannot begin with digit</string>
+    <string name="cannot_contain_space_username_message">username cannot contain space</string>
+    <string name="cannot_contain_space_pass_message">password cannot contain space</string>
+    <string name="network_problems">Problem with Network Connection</string>
 </resources>
