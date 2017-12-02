@@ -2,6 +2,7 @@ package com.example.android.vidmeclient.widgets.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,24 @@ import com.example.android.vidmeclient.common.Constants;
 import com.example.android.vidmeclient.R;
 import com.example.android.vidmeclient.model.entities.Video;
 import com.example.android.vidmeclient.ui.activities.VideoPlayerActivity;
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.source.LoopingMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.hls.HlsMediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +55,9 @@ public class VideoContentAdapter extends RecyclerView.Adapter<VideoContentAdapte
     private Context context;
 
     private List<Video> videos = null;
+    private ViewHolder currentlyPlayed = null;
+
+    private SimpleExoPlayer player;
 
     public VideoContentAdapter(Context context, List<Video> videos) {
         this.context = context;
@@ -70,12 +92,38 @@ public class VideoContentAdapter extends RecyclerView.Adapter<VideoContentAdapte
                 })
                 .into(holder.videoImage);
 
+        stopPlaying();
     }
 
     @Override
     public int getItemCount() {
         if (videos == null) return 0;
         return videos.size();
+    }
+
+    private MediaSource prepareMediaSource(String video) {
+        Uri videoUri = Uri.parse(video);
+
+        //Produces DataSource instances through which media data is loaded.
+        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(context,
+                Util.getUserAgent(context, "Vid.meClientAdapter"), null);
+        //Produces Extractor instances for parsing the media data.
+        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+
+        //FOR LIVESTREAM LINK:
+        MediaSource videoSource = new HlsMediaSource(videoUri, dataSourceFactory, 1, null, null);
+
+        return new LoopingMediaSource(videoSource);
+    }
+
+    public void stopPlaying() {
+        if (currentlyPlayed != null) {
+            player.stop();
+            player.release();
+            currentlyPlayed.videoImage.setVisibility(View.VISIBLE);
+            currentlyPlayed.exoPlayerView.setVisibility(View.INVISIBLE);
+            currentlyPlayed = null;
+        }
     }
 
     public void addVideos(List<Video> videos) {
@@ -93,6 +141,8 @@ public class VideoContentAdapter extends RecyclerView.Adapter<VideoContentAdapte
         ProgressBar progressBar;
         @BindView(R.id.action_button)
         Button playButton;
+        @BindView(R.id.muted_video)
+        SimpleExoPlayerView exoPlayerView;
 
         public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.item_video, parent, false));
@@ -100,6 +150,9 @@ public class VideoContentAdapter extends RecyclerView.Adapter<VideoContentAdapte
             ButterKnife.bind(this, itemView);
 
             View.OnClickListener listener = v -> {
+                if (currentlyPlayed != null) {
+                    stopPlaying();
+                }
                 Context context1 = v.getContext();
                 try {
                     int index = getAdapterPosition();
@@ -111,8 +164,36 @@ public class VideoContentAdapter extends RecyclerView.Adapter<VideoContentAdapte
                     e.printStackTrace();
                 }
             };
+
+            playButton.setOnClickListener(v -> {
+                if (currentlyPlayed != null) {
+                    stopPlaying();
+                    if (currentlyPlayed == this) {
+                        currentlyPlayed = null;
+                        return;
+                    }
+                }
+                videoImage.setVisibility(View.INVISIBLE);
+                exoPlayerView.setVisibility(View.VISIBLE);
+                // 1. Create a default TrackSelector
+                BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+                TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+                TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+
+                // 2. Create a default LoadControl
+                LoadControl loadControl = new DefaultLoadControl();
+                player = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
+
+                // Bind the player to the view.
+                exoPlayerView.setPlayer(player);
+                player.setVolume(0);
+                player.prepare(prepareMediaSource(videos.get(getAdapterPosition()).getCompleteUrl()));
+                player.setPlayWhenReady(true); //run file/link when ready to play.
+                currentlyPlayed = ViewHolder.this;
+            });
+
             videoImage.setOnClickListener(listener);
-            playButton.setOnClickListener(listener);
+
         }
     }
 }
