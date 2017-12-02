@@ -11,7 +11,6 @@ import android.widget.Toast;
  */
 
 public abstract class NetworkConnectionReceiver extends BroadcastReceiver {
-//    private boolean connected = false;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -27,19 +26,12 @@ public abstract class NetworkConnectionReceiver extends BroadcastReceiver {
                     .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
             if (wifi.isConnected() || mobile.isConnected()) {
-//                connected = true;
-//                Toast.makeText(context, "connected", Toast.LENGTH_LONG).show();
                 action();
             } else {
-//                connected = false;
-//                Toast.makeText(context, "Problem with Network Connection", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Problem with Network Connection", Toast.LENGTH_SHORT).show();
             }
         }
     }
-
-//    public boolean isConnected() {
-//        return connected;
-//    }
 
     public abstract void action();
 
