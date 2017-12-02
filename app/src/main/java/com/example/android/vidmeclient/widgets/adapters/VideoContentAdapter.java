@@ -93,6 +93,7 @@ public class VideoContentAdapter extends RecyclerView.Adapter<VideoContentAdapte
                 .into(holder.videoImage);
 
         stopPlaying();
+        currentlyPlayed = null;
     }
 
     @Override
@@ -122,7 +123,6 @@ public class VideoContentAdapter extends RecyclerView.Adapter<VideoContentAdapte
             player.release();
             currentlyPlayed.videoImage.setVisibility(View.VISIBLE);
             currentlyPlayed.exoPlayerView.setVisibility(View.INVISIBLE);
-            currentlyPlayed = null;
         }
     }
 
