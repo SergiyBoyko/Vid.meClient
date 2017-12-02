@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="304dp"
     android:layout_gravity="center"
     android:layout_marginBottom="@dimen/md_keylines"
+    android:layout_marginTop="5dp"
     android:foreground="?attr/selectableItemBackground">
 
     <RelativeLayout
@@ -18,6 +20,14 @@
             android:layout_height="@dimen/card_image_height"
             android:scaleType="centerCrop"
             android:src="@drawable/example" />
+
+        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+            android:id="@+id/muted_video"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:focusable="true"
+            android:visibility="invisible"
+            app:use_controller="false" />
 
         <ProgressBar
             android:id="@+id/progress"
@@ -46,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/card_text"
-            android:text="Play"
+            android:text="Preview"
             android:textColor="?attr/colorPrimary" />
 
         <TextView
@@ -68,8 +78,8 @@
             android:layout_height="@dimen/cards_button_height"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/card_text"
-            android:scaleType="center"
             android:layout_marginRight="@dimen/mg_fav_but"
+            android:scaleType="center"
             android:src="@drawable/ic_favourite"
             android:tint="@android:color/darker_gray" />
 
